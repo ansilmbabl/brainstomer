@@ -4,6 +4,7 @@ import { useCallback, useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MessageMarkdown } from "@/components/MessageMarkdown";
+import { OpportunityRadarPanel } from "@/components/OpportunityRadarPanel";
 import { nextPhase as getNextPhaseId, phaseLabel } from "@/lib/phases";
 import { toIdeaMode } from "@/lib/modes";
 
@@ -316,6 +317,19 @@ export function SessionWorkspace({ initial }: { initial: Initial }) {
             </p>
           </div>
         </div>
+
+        <OpportunityRadarPanel
+          sessionId={state.id}
+          mode={state.mode}
+          phase={state.phase}
+          focusRegion={state.focusRegion}
+          focusIndustry={state.focusIndustry}
+          onInsertTemplate={(text) => {
+            setInput(text);
+            setAppError(null);
+            queueMicrotask(() => textareaRef.current?.focus());
+          }}
+        />
 
         <div className="relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-zinc-50/50 shadow-inner dark:border-zinc-800/80 dark:bg-zinc-900/30">
           <div

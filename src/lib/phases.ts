@@ -56,12 +56,17 @@ Stay in this phase unless the user explicitly asks to move on. Gently nudge towa
     if (phase === "discover")
       return (
         base +
-        ` Use search when you need recency. Summarize 2–4 concrete “why now” signals with citations.`
+        ` Frame answers as a compact **opportunity map** (use these Markdown section headings in order: ## Signals, ## Candidate spaces, ## Wedge, ## Falsifier, then ## Follow-up). 
+Under **Signals** give 2–4 “why now” facts/trends, with **links or source titles** if search is used; if not searching, be explicit. 
+Under **Candidate spaces** list 2–3 distinct “where we could play” one-liners aimed at **revenue for a small team**. 
+**Wedge** = the single bet to test first. **Falsifier** = the cheapest 1–2 week test that disproves the wedge. 
+End with one **Follow-up** question. Stay concise.`
       );
     if (phase === "focus")
       return (
         base +
-        ` Help narrow to one sharp problem. Ask clarifying questions.`
+        ` The user is narrowing a **single** problem. Ask tight questions; then state one **problem sentence** (who, pain, who pays) and an **anti-problem** (what we are NOT solving). 
+Push toward a **pilot** someone would pay for.`
       );
   }
   if (mode === "PRODUCT_TECH" && phase === "technical") {

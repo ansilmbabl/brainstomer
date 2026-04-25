@@ -1,7 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
+import { touchLastWeeklyScan } from "@/lib/opportunity-radar";
 
 const MODES = [
   { id: "OPPORTUNITY_SCAN", label: "Opportunity scan", hint: "What is changing, where are the openings?" },
@@ -12,13 +13,19 @@ const MODES = [
 const input =
   "mt-1.5 w-full rounded-xl border border-zinc-200/90 bg-white px-3 py-2.5 text-sm text-zinc-900 shadow-sm transition focus:border-teal-500/50 focus:outline-none focus:ring-2 focus:ring-teal-500/20 dark:border-zinc-700/80 dark:bg-zinc-950/80 dark:text-zinc-100 dark:focus:ring-teal-400/20";
 
-export function NewSessionForm() {
+function NewSessionFormInner() {
   const r = useRouter();
-  const [title, setTitle] = useState("");
+  const searchParams = useSearchParams();
+  const isWeekly = searchParams.get("weekly") === "1";
+  const [title, setTitle] = useState(() =>
+    isWeekly
+      ? `Weekly opportunity scan – ${new Date().toISOString().slice(0, 10)}`
+      : "",
+  );
   const [mode, setMode] = useState<(typeof MODES)[number]["id"]>("OPPORTUNITY_SCAN");
   const [region, setRegion] = useState("");
   const [industry, setIndustry] = useState("");
-  const [researchMode, setResearchMode] = useState(false);
+  const [researchMode, setResearchMode] = useState(isWeekly);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const modeInfo = MODES.find((m) => m.id === mode);
@@ -45,6 +52,9 @@ export function NewSessionForm() {
         return;
       }
       const j = (await res.json()) as { session: { id: string } };
+      if (searchParams.get("weekly") === "1") {
+        touchLastWeeklyScan();
+      }
       r.push(`/sessions/${j.session.id}`);
     } catch {
       setError("Network error. Check your connection and try again.");
@@ -137,5 +147,20 @@ export function NewSessionForm() {
         </button>
       </div>
     </form>
+  );
+}
+
+export function NewSessionForm() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          className="h-40 animate-pulse rounded-2xl bg-zinc-100/80 dark:bg-zinc-800/50"
+          aria-hidden
+        />
+      }
+    >
+      <NewSessionFormInner />
+    </Suspense>
   );
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { NewSessionForm } from "@/components/NewSessionForm";
+import { WeeklyOpportunityNudge } from "@/components/WeeklyOpportunityNudge";
 import { formatDateTimeUtc } from "@/lib/format-date";
 
 export default async function SessionsPage() {
@@ -29,10 +30,13 @@ export default async function SessionsPage() {
           Your sessions
         </h1>
         <p className="mt-2 max-w-xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-          Structured ideation toward <strong>technology</strong> and{" "}
-          <strong>revenue</strong>—with optional live search when Tavily is configured.
+          Use <strong>Opportunity scan</strong> to turn what’s moving in the world into a
+          focused revenue bet: a <strong>radar checklist</strong> and starter prompts in
+          discover, plus optional live search when Tavily is set up.
         </p>
       </div>
+
+      <WeeklyOpportunityNudge />
 
       <section className="mb-10 rounded-2xl border border-zinc-200/80 bg-white/90 p-5 shadow-sm dark:border-zinc-800/80 dark:bg-zinc-900/50 sm:p-6">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
