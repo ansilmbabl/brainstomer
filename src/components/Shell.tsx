@@ -20,6 +20,12 @@ export function Shell({
           </Link>
           <Link
             className="text-zinc-600 hover:underline dark:text-zinc-400"
+            href="/settings/llm"
+          >
+            LLM
+          </Link>
+          <Link
+            className="text-zinc-600 hover:underline dark:text-zinc-400"
             href="/settings/integrations"
           >
             Integrations

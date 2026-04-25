@@ -14,7 +14,7 @@ export default async function IntegrationsPage() {
     : [];
   return (
     <div className="mx-auto max-w-2xl p-6">
-      <h1 className="text-2xl font-semibold">Integrations</h1>
+      <h1 className="text-2xl font-semibold">Integrations &amp; API</h1>
       <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
         Use API keys and webhooks to connect other agents. REST base:{" "}
         <code className="text-xs">/api/idea-sessions</code> with{" "}

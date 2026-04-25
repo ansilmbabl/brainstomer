@@ -5,5 +5,5 @@ export default function SettingsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <Shell title="Integrations · Brainstormer">{children}</Shell>;
+  return <Shell title="Settings · Brainstormer">{children}</Shell>;
 }

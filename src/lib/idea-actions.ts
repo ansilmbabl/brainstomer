@@ -79,7 +79,7 @@ export async function appendUserMessageAndReply(
       content: text,
     },
   });
-  const reply = await runAssistantTurn(session, history, text);
+  const reply = await runAssistantTurn(session, history, text, userId);
   await prisma.ideaMessage.create({
     data: {
       ideaSessionId,
@@ -150,6 +150,7 @@ export async function runArtifact(
   const md = await generateOnePagerArtifact(
     s,
     msgs.map((m) => ({ role: m.role, content: m.content })),
+    userId,
   );
   const updated = await prisma.ideaSession.update({
     where: { id },
