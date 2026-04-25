@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ideaSessions   IdeaSession[]
+  apiKeys        ApiKey[]
+  webhooks       WebhookEndpoint[]
+}
+
+model IdeaSession {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String
+  /// OPPORTUNITY_SCAN | PRODUCT_TECH | BUSINESS_GTM
+  mode          String
+  /// Current phase id (see lib/phases.ts)
+  phase         String
+  focusRegion   String?
+  focusIndustry String?
+  scorecard     String?
+  assumptions   String?
+  /// Generated opportunity one-pager (Markdown)
+  artifactMd    String?
+  /// When true, assistant may call search more freely (user accepts higher cost)
+  researchMode  Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  messages IdeaMessage[]
+
+  @@index([userId, updatedAt])
+}
+
+model IdeaMessage {
+  id            String      @id @default(cuid())
+  ideaSessionId String
+  session       IdeaSession @relation(fields: [ideaSessionId], references: [id], onDelete: Cascade)
+  role          String
+  content       String
+  citations     String?
+  createdAt     DateTime    @default(now())
+
+  @@index([ideaSessionId, createdAt])
+}
+
+/// External agents / integrations: Bearer `bsk_...` hashed at rest
+model ApiKey {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  tokenHash  String    @unique
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model WebhookEndpoint {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url       String
+  /// Secret used to sign HMAC-SHA256 payloads (raw, shown once on create)
+  secret    String
+  /// JSON string: ["session.phase_changed","artifact.published","message.created"]
+  events    String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
