@@ -53,31 +53,31 @@ export function LlmSettingsClient({ initial }: { initial: Initial }) {
 
   if (!state.isOllama) {
     return (
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        Model picker is for local Ollama. Set <code className="text-xs">LLM_PROVIDER=ollama</code>{" "}
-        in <code className="text-xs">.env</code> and restart the app, then return here.
+      <p className="rounded-xl border border-zinc-200/80 bg-zinc-50/80 p-4 text-sm leading-relaxed text-zinc-600 dark:border-zinc-800/80 dark:bg-zinc-900/40 dark:text-zinc-400">
+        Model picker is for local Ollama. Set <code className="rounded bg-zinc-200/80 px-1.5 py-0.5 text-xs font-mono dark:bg-zinc-800">LLM_PROVIDER=ollama</code>{" "}
+        in <code className="rounded bg-zinc-200/80 px-1.5 py-0.5 text-xs font-mono dark:bg-zinc-800">.env</code> and restart the app, then return here.
       </p>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {state.ollamaListError && (
-        <p className="rounded border border-amber-200 bg-amber-50 p-2 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+        <p className="rounded-xl border border-amber-200/80 bg-amber-50/90 p-3 text-sm text-amber-950 dark:border-amber-500/20 dark:bg-amber-950/40 dark:text-amber-200/90">
           {state.ollamaListError}
         </p>
       )}
-      <p className="text-xs text-zinc-500">
-        Default from <code>OLLAMA_MODEL</code> in .env:{" "}
-        <span className="font-mono">{state.envDefault}</span>
-        {" · "}
-        Active for you: <span className="font-mono text-zinc-800 dark:text-zinc-200">{state.effectiveModel}</span>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        Default from <code className="font-mono text-xs text-zinc-800 dark:text-zinc-200">OLLAMA_MODEL</code> in .env:{" "}
+        <span className="font-mono text-teal-800 dark:text-teal-300">{state.envDefault}</span>
+        <span className="mx-1.5 text-zinc-300 dark:text-zinc-600">·</span>
+        Active: <span className="font-mono font-medium text-zinc-900 dark:text-zinc-100">{state.effectiveModel}</span>
       </p>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
-        <label className="min-w-0 flex-1 text-sm text-zinc-600 dark:text-zinc-400">
+        <label className="min-w-0 flex-1 text-sm font-medium text-zinc-700 dark:text-zinc-300">
           Your Ollama model
           <select
-            className="mt-1 w-full max-w-md rounded border border-zinc-200 bg-white px-2 py-2 text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100"
+            className="mt-1.5 w-full max-w-md rounded-xl border border-zinc-200/90 bg-white px-3 py-2.5 text-sm text-zinc-900 shadow-sm focus:border-teal-500/50 focus:outline-none focus:ring-2 focus:ring-teal-500/20 dark:border-zinc-700/80 dark:bg-zinc-950/80 dark:text-zinc-100"
             value={state.userOllamaModel ?? ""}
             onChange={(e) => {
               const v = e.target.value;
@@ -107,32 +107,40 @@ export function LlmSettingsClient({ initial }: { initial: Initial }) {
         <button
           type="button"
           onClick={load}
-          className="shrink-0 rounded border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-800"
+          className="shrink-0 rounded-xl border border-zinc-200/90 bg-white px-4 py-2.5 text-sm font-medium text-zinc-800 shadow-sm transition hover:border-teal-300/50 hover:bg-zinc-50 dark:border-zinc-700/80 dark:bg-zinc-900/50 dark:text-zinc-200 dark:hover:border-teal-500/30"
         >
           Refresh list
         </button>
       </div>
       {state.models.length > 0 && (
-        <div className="overflow-x-auto rounded border border-zinc-200 text-xs dark:border-zinc-800">
+        <div className="overflow-x-auto rounded-xl border border-zinc-200/80 bg-white/50 text-xs dark:border-zinc-800/80 dark:bg-zinc-900/30">
           <table className="w-full border-collapse text-left">
             <thead>
-              <tr className="border-b border-zinc-200 dark:border-zinc-800">
-                <th className="p-2 font-medium">Model</th>
-                <th className="p-2 font-medium">Size</th>
-                <th className="p-2 font-medium">Updated</th>
+              <tr className="border-b border-zinc-200/80 bg-zinc-50/80 dark:border-zinc-800 dark:bg-zinc-900/50">
+                <th className="p-3 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                  Model
+                </th>
+                <th className="p-3 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                  Size
+                </th>
+                <th className="p-3 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                  Updated
+                </th>
               </tr>
             </thead>
             <tbody>
               {state.models.map((m) => (
                 <tr
                   key={m.name}
-                  className="border-b border-zinc-100 last:border-0 dark:border-zinc-900"
+                  className="border-b border-zinc-100/80 last:border-0 dark:border-zinc-800/60"
                 >
-                  <td className="p-2 font-mono text-[11px] sm:text-xs">{m.name}</td>
-                  <td className="p-2 text-zinc-500">
+                  <td className="p-3 font-mono text-[11px] text-zinc-900 sm:text-xs dark:text-zinc-200">
+                    {m.name}
+                  </td>
+                  <td className="p-3 text-zinc-600 dark:text-zinc-400">
                     {m.size != null ? `${(m.size / 1e9).toFixed(2)} GB` : "—"}
                   </td>
-                  <td className="p-2 text-zinc-500">
+                  <td className="p-3 text-zinc-500 tabular-nums">
                     {m.modified_at ? formatModelTime(m.modified_at) : "—"}
                   </td>
                 </tr>
@@ -142,11 +150,11 @@ export function LlmSettingsClient({ initial }: { initial: Initial }) {
         </div>
       )}
       {message && (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">{message}</p>
+        <p className="text-sm text-teal-800 dark:text-teal-300/90">{message}</p>
       )}
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs leading-relaxed text-zinc-500">
         Pull a new model in the terminal, then click <strong>Refresh list</strong> (e.g.{" "}
-        <code className="text-[11px]">ollama pull qwen2.5:7b</code>).
+        <code className="rounded bg-zinc-200/60 px-1.5 py-0.5 font-mono text-[11px] dark:bg-zinc-800">ollama pull qwen2.5:7b</code>).
       </p>
     </div>
   );

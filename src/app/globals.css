@@ -1,26 +1,67 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f4f5;
+  --foreground: #18181b;
+  --card: #ffffff;
+  --card-raised: #fafafa;
+  --border: #e4e4e7;
+  --accent: #0d9488;
+  --accent-hover: #0f766e;
+  --accent-muted: rgba(13, 148, 136, 0.12);
+  --ring: #0d9488;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0c0c0e;
+    --foreground: #f4f4f5;
+    --card: #141416;
+    --card-raised: #1a1a1d;
+    --border: #27272a;
+    --accent: #2dd4bf;
+    --accent-hover: #5eead4;
+    --accent-muted: rgba(45, 212, 191, 0.12);
+    --ring: #2dd4bf;
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
+  min-height: 100%;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-image: radial-gradient(
+    ellipse 120% 80% at 50% -20%,
+    var(--accent-muted),
+    transparent 55%
+  );
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--accent-muted);
+  color: var(--foreground);
+}
+
+/* focus visibility for keyboard users */
+:where(
+    button,
+    a,
+    input,
+    select,
+    textarea
+  ):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }

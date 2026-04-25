@@ -34,14 +34,16 @@ export default async function LlmSettingsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl p-6">
-      <h1 className="text-2xl font-semibold">LLM (Ollama)</h1>
-      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-        Choose which local model Brainstormer uses. Your choice is stored on your account and
-        overrides <code className="text-xs">OLLAMA_BASE_URL</code> / <code className="text-xs">OLLAMA_MODEL</code> in{" "}
-        <code className="text-xs">.env</code> for the model name only.
+    <div className="mx-auto max-w-3xl">
+      <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+        Local models
+      </h1>
+      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+        When <code className="rounded bg-zinc-200/50 px-1.5 py-0.5 text-xs font-mono dark:bg-zinc-800">LLM_PROVIDER=ollama</code>, pick which model to use. Your choice
+        is saved to your account and overrides the <code className="text-xs">OLLAMA_MODEL</code> default from{" "}
+        <code className="text-xs">.env</code>.
       </p>
-      <div className="mt-6">
+      <div className="mt-6 rounded-2xl border border-zinc-200/80 bg-white/90 p-5 shadow-sm dark:border-zinc-800/80 dark:bg-zinc-900/50 sm:p-6">
         <LlmSettingsClient initial={initial} />
       </div>
     </div>
